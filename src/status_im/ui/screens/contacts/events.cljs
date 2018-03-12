@@ -286,6 +286,17 @@
   (fn [{:keys [db]} [_ chat-or-whisper-id]]
     (add-pending-contact {:db db} chat-or-whisper-id)))
 
+(defn whisper-id->new-contact [whisper-id]
+  {:name             (generate-gfy whisper-id)
+   :photo-path       (identicon whisper-id)
+   :whisper-identity whisper-id})
+
+(register-handler-fx
+  :add-new-contact
+  (fn [{:keys [db]} [_ new-identity]]
+    (add-new-contact {:db db}
+                     (whisper-id->new-contact new-identity))))
+
 (register-handler-fx
   :add-pending-contact-and-open-chat
   (fn [{:keys [db]} [_ whisper-id]]
@@ -387,6 +398,4 @@
       (when (and new-identity (not (string/blank? new-identity)))
         {:dispatch (if (get-in db [:contacts/contacts new-identity])
                      [:add-pending-contact-and-open-chat new-identity]
-                     [:add-new-contact-and-open-chat {:name             (generate-gfy new-identity)
-                                                      :photo-path       (identicon new-identity)
-                                                      :whisper-identity new-identity}])}))))
+                     [:add-new-contact-and-open-chat (whisper-id->new-contact new-identity)])}))))
