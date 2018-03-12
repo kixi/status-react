@@ -42,7 +42,7 @@
 (def settings-item-separator
   {:margin-left 16})
 
-(defstyle settings-item
+(def settings-item
   {:padding-horizontal 16
    :flex-direction     :row
    :align-items        :center

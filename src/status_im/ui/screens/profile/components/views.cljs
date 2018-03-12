@@ -66,7 +66,8 @@
    {:on-press action-fn
     :disabled (not active?)}
    [react/view styles/settings-item
-    [react/text {:style styles/settings-item-text}
+    [react/text {:style           styles/settings-item-text
+                 :number-of-lines 1}
      (i18n/label label-kw)]
     (when-not (string/blank? value)
       [react/text {:style           styles/settings-item-value
